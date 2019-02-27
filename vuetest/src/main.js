@@ -12,7 +12,7 @@ import store from './store/store'
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap/dist/js/bootstrap.min.js';
 //https://bird.ioliu.cn api 解决跨域问题
-axios.defaults.baseURL = 'https://bird.ioliu.cn/v1/?url=http://api.douban.com/';
+axios.defaults.baseURL = 'https://bird.ioliu.cn/v1/?url=https://api.douban.com';
 
 Vue.config.productionTip = false;
 Vue.prototype.$http = axios;

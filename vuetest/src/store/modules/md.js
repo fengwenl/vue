@@ -2,7 +2,7 @@ import * as types from '../mutation-types'
 import movie from '../../api/movie'
 
 const state = {
-  loading1: true,
+  loading: true,
   movie: {
     images: {
       large: ''
@@ -14,14 +14,14 @@ const state = {
 }
 
 const getters = {
-  loading1: state => state.loading1,
+  loading: state => state.loading,
   movie: state => state.movie
 }
 
 const actions = {
   // 根据ID获取电影信息
   getMovieDetailById({ commit }, id){
-    state.loading1 = true;
+    state.loading = true;
     movie.getMovieDetailById(id).then(data => {
       commit(types.MOVIE_DETAIL, data)
     })
@@ -31,11 +31,12 @@ const actions = {
 const mutations = {
   [types.MOVIE_DETAIL](state, data){
     state.movie = data;
-    state.loading1 = false;
+    state.loading = false;
   }
 }
 
 export default {
+  namespaced: true,
   state,
   getters,
   actions,

@@ -1,30 +1,81 @@
-
 <template>
-<div>
- <el-card class="box-card">
-  <div v-for="o in 4" :key="o" class="text item">
-    {{'列表内容 ' + o }}
+    <div class="search-view has-header">
+        <el-input placeholder="请输入内容"  v-model="searchKey" @keyup.enter.native="seach" class="input-with-select">
+          <el-button slot="append" type="info" icon="el-icon-search"  @click="seach"></el-button>
+        </el-input> 
+    <!-- <ret></ret> -->
+    <!-- <router-view></router-view> -->
+ <!-- <sea></sea> -->
+
   </div>
-</el-card>   
-<el-row>
-  <el-col :span="8" v-for="(o, index) in 2" :key="o" :offset="index > 0 ? 2 : 0">
-    <el-card :body-style="{ padding: '0px' }">
-      <img src="@/assets/logo.png" class="image">
-      <div style="padding: 14px;">
-        <span>好吃的汉堡</span>
-        <div class="bottom clearfix">
-          <time class="time">{{ currentDate }}</time>
-          <el-button type="text" class="button">操作按钮</el-button>
-        </div>
-      </div>
-    </el-card>
-  </el-col>
-</el-row>
-</div>
+
 </template>
 
+<script>
+ //import movieList from '@/views/ret.vue'
+//import { mapState } from 'vuex'
+//import sea from '@/components/douban/test/sea'
+
+
+export default {
+ //components: { ret },
+
+ name:'cq',
+  data(){
+
+    return {
+      //searchkey: ''
+      searchKey: '',
+     // movieType: 'in_theaters'// 正在热映类型
+    }
+  },
+  // components: {
+  //     'movie-list': movieList
+  //   },
+      methods: {
+      seach(){
+        //刷新页面
+       // this.$router.go(0)
+        if (!this.searchKey) {
+          alert('请输入搜索内容');
+          return;
+        }
+       //搜索页面跳转
+       this.$router.push({
+         path: '/bks/' + this.searchKey,
+       })
+        this.searchKey = "";
+        
+      }
+    },
+  // methods:{
+  //   search(){
+  //       if (!this.searchKey) {
+  //         alert('请输入搜索内容');
+  //         return;
+  //       }
+  //       this.$router.push({
+  //         path:'/search/' + this.searchkey,
+  //       })
+  //       this.searchkey = "";
+
+  //   }
+  // }
+    // components: {
+    //   sea
+    // }
+  
+}
+</script>
 <style>
-  .text {
+.has-header{
+  margin-bottom: 20px;
+  margin-top: 20px;
+}
+.el-input-group {
+    width: 100%;
+}
+ .text {
     font-size: 14px;
   }
 
@@ -35,34 +86,7 @@
   .box-card {
     width: 480px;
   }
-   .time {
-    font-size: 13px;
-    color: #999;
+  .el-card__body{
+    height: 570px;
   }
-  
-  .bottom {
-    margin-top: 13px;
-    line-height: 12px;
-  }
-
-  .button {
-    padding: 0;
-    float: right;
-  }
-
-  .image {
-    width:50%;
-    display: block;
-  }
-
-  .clearfix:before,
-  .clearfix:after {
-      display: table;
-      content: "";
-  }
-  
-  .clearfix:after {
-      clear: both
-  }
-
 </style>

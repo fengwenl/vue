@@ -8,35 +8,31 @@
       <h3>{{title}}</h3>
         <div class="card-columns">
           <div class="card" v-for="item in list" :key="item.id">
-                    <router-link :to="{path:'/detail/'+item.id}">
+                    <router-link :to="{path:'/bkd/'+item.id}">
                       <img class="card-img-top" :src="getImages(item.images.small)" alt="item.title">
                     </router-link>
             <div class="card-body">
               <h5 class="card-title">{{item.title}}</h5>
-              <p class="card-text">{{item.original_title}}</p>
+              <p class="card-text">{{item.subtitle}}</p>
             </div>
             <ul class="list-group list-group-flush">
-                <li class="list-group-item">年份：{{item.year}}</li>
-              <li class="list-group-item">评分：{{item.rating.average}} / 评价：{{item.collect_count}}</li>
-              <li class="list-group-item"> 类型： <template v-for="genres of item.genres">{{genres}}/ </template> </li>
-              <li class="list-group-item">导演：
-                  <template v-for="directors in item.directors">
-                      <template >{{directors.name}}/</template>
-                </template>
-                </li>
-               <li class="list-group-item" >主演：
-                 <template v-for="(casts, index) in item.casts">
-                   <template>{{casts.name}}/</template>
+              <li class="list-group-item">评分：{{item.rating.average}} / 评价：{{item.rating.numRaters}}</li>
+            
+              <li class="list-group-item"> 年份：{{item.pubdate}} </li>
+             <li class="list-group-item"> 作者： <template v-for="author in item.author">{{author}} </template> </li>
+               <li class="list-group-item" >类型：
+                 <template v-for="(tags, index) in item.tags">
+                   <template v-if="index<3">{{tags.name}}/</template>
                  </template>
-               </li>             
+               </li>
             </ul>
             <div class="card-body">
-              <router-link  class="btn btn-primary" role="button" :to="{path:'/detail/'+item.id}">{{item.title}}</router-link>
+              <router-link  class="btn btn-primary" role="button" :to="{path:'/bkd/'+item.id}">{{item.title}}</router-link>
             </div>
           </div>
         </div>  
-
-    </div>     
+     
+    </div>
   </div>
 </template>
 
@@ -44,57 +40,36 @@
   import {mapGetters, mapActions} from 'vuex'
    import cqw from '@/components/search.vue'
   export default {
-  data(){
-    return{
 
-
-    }
-  },
     computed:{ 
       ...mapGetters({
-      loading: 'movieList/loading',
-      title: 'movieList/title',
-      list: 'movieList/list',
-
- 
+      loading: 'bookList/loading',
+      title: 'bookList/title',
+      list: 'bookList/list'
     }),
-
     },
-
-    props: ['movieType'],// 接收父组件传过来的值 --in_theaters=正在上映的电影  --search==搜索电影
+    props: ['bookType'],// 接收父组件传过来的值 --in_theaters=正在上映的电影  --search==搜索电影
     mounted(){
-      
-      if (this.movieType == 'search') {
+        
+      if (this.bookType == 'search') {
         var obj = {
           k:this.$route.params.searchKey,
           start:0,
           count:5
-        }
-        this.$store.dispatch('movieList/searchMovie', obj);
-     
-      } else {
-        var obj = {
-          k:this.$route.params.searchKey,
-          start:0,
-          count:5
-        }
-        this.$store.dispatch('movieList/getInTheaters', obj);
-       
-      }    
+        }        
+        this.$store.dispatch('bookList/searchBook', obj);
+      }
     },
-  
     methods: {
-
-
         ... mapActions({
-          searchMovie:'movieList/searchMovie'
+          searchBook:'bookList/searchBook'
         }),
       getFilterData(obj){
         let arr = [];
         if (!obj || obj.length == 0)return '';
 
         for (let i = 0; i < obj.length; i++) {
-          arr.push(obj[i].genres)
+          arr.push(obj[i].name)
         }
         return arr.join('/');
       },
@@ -104,6 +79,9 @@
         let _u = _url.substring( 8 );
         return 'https://images.weserv.nl/?url=' + _u;
       }
+         return _url
+      
+      
     }
     
 

@@ -1,11 +1,12 @@
 <template>
+
   <div class="container">
-    <cqw></cqw>
+      <cqw></cqw>
     <div class="canvas" v-show="loading">
       <div class="spinner"></div>
     </div>
     <div v-show="!loading">
-      <h3>{{title}}</h3>
+        <h3>TOP30排行榜电影</h3>
         <div class="card-columns">
           <div class="card" v-for="item in list" :key="item.id">
                     <router-link :to="{path:'/detail/'+item.id}">
@@ -22,106 +23,62 @@
               <li class="list-group-item">导演：
                   <template v-for="directors in item.directors">
                       <template >{{directors.name}}/</template>
-                </template>
-                </li>
+                </template></li>
                <li class="list-group-item" >主演：
                  <template v-for="(casts, index) in item.casts">
-                   <template>{{casts.name}}/</template>
+                   <template v-if="index<3">{{casts.name}}/</template>
                  </template>
-               </li>             
+               </li>
+        
+            
             </ul>
             <div class="card-body">
               <router-link  class="btn btn-primary" role="button" :to="{path:'/detail/'+item.id}">{{item.title}}</router-link>
             </div>
           </div>
         </div>  
-
-    </div>     
+    </div>
+    <mvpage></mvpage>
   </div>
 </template>
 
 <script>
   import {mapGetters, mapActions} from 'vuex'
-   import cqw from '@/components/search.vue'
+  import mvpage from '@/components/mvpage.vue'
+  import cqw from '@/components/search.vue'
   export default {
-  data(){
-    return{
-
-
-    }
-  },
-    computed:{ 
-      ...mapGetters({
+    computed: mapGetters({
       loading: 'movieList/loading',
       title: 'movieList/title',
-      list: 'movieList/list',
-
- 
+      list: 'movieList/list'
     }),
-
-    },
-
-    props: ['movieType'],// 接收父组件传过来的值 --in_theaters=正在上映的电影  --search==搜索电影
+   
     mounted(){
-      
-      if (this.movieType == 'search') {
         var obj = {
-          k:this.$route.params.searchKey,
           start:0,
           count:5
-        }
-        this.$store.dispatch('movieList/searchMovie', obj);
-     
-      } else {
-        var obj = {
-          k:this.$route.params.searchKey,
-          start:0,
-          count:5
-        }
-        this.$store.dispatch('movieList/getInTheaters', obj);
-       
-      }    
+        }        
+        this.$store.dispatch('movieList/mvtop',obj);
     },
-  
     methods: {
-
-
         ... mapActions({
-          searchMovie:'movieList/searchMovie'
+          searchMovie:'movieList/mvtop'
         }),
-      getFilterData(obj){
-        let arr = [];
-        if (!obj || obj.length == 0)return '';
-
-        for (let i = 0; i < obj.length; i++) {
-          arr.push(obj[i].genres)
-        }
-        return arr.join('/');
-      },
-// 解决403图片缓存问题
+    // 解决403图片缓存问题
     getImages( _url ){
       if( _url !== undefined ){
         let _u = _url.substring( 8 );
         return 'https://images.weserv.nl/?url=' + _u;
       }
     }
-    
-
     },
         components: {
-      cqw
+      cqw,
+      mvpage
     }
   }
 </script>
 
 <style scoped>
-.card-img-top{
-  border-top-left-radius:10px; 
-  border-top-right-radius:10px; 
-}
-.card{
-  border-top-left-radius:10px; 
-  border-top-right-radius:10px; 
 
-}
 </style>
