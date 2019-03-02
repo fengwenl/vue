@@ -40,7 +40,12 @@
         // 防止返回重复调用
         if (to.path.indexOf('/sea/') == 0) {
           // 调用子组件方法
-          this.$refs.updateList.searchMovie(this.$route.params.searchKey);
+            var obj = {
+            k:this.$route.params.searchKey,
+            start:0,
+            count:5
+            }  
+          this.$refs.updateList.searchMovie(obj);
         }
       }
     },

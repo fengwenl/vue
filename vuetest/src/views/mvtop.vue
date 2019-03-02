@@ -23,14 +23,13 @@
               <li class="list-group-item">导演：
                   <template v-for="directors in item.directors">
                       <template >{{directors.name}}/</template>
-                </template></li>
+                </template>
+                </li>
                <li class="list-group-item" >主演：
                  <template v-for="(casts, index) in item.casts">
                    <template v-if="index<3">{{casts.name}}/</template>
                  </template>
                </li>
-        
-            
             </ul>
             <div class="card-body">
               <router-link  class="btn btn-primary" role="button" :to="{path:'/detail/'+item.id}">{{item.title}}</router-link>
